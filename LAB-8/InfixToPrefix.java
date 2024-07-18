@@ -9,7 +9,7 @@ public class InfixToPrefix {
         StringBuilder ans = new StringBuilder();
 
         StringBuilder infix = new StringBuilder();
-        infix.append("(a+b*c/d-e+f/g/(h+i))");
+        infix.append("(A^B^C)");
 
         infix.reverse();
 
