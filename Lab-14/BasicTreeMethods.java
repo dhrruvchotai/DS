@@ -1,7 +1,7 @@
 import java.util.Queue;
 import java.util.LinkedList;
 
-public class MyTree {
+public class BasicTreeMethods {
 
     static class Node{
 
@@ -105,10 +105,34 @@ public class MyTree {
         }
 
     }
-    //STLL TO BE UPDATED!!!
+
+    public static boolean serchNode(Node root,int val){
+        
+        if(root == null) return false;
+
+        if(root.data == val) return true;
+
+        Queue<Node> q = new LinkedList<>();
+
+        q.add(root);
+
+        while(!q.isEmpty()){
+
+            Node temp = q.poll();
+
+            if(temp.data == val) return true;
+
+            if(temp.left != null) q.add(temp.left);
+            if(temp.right != null)  q.add(temp.right);
+
+        }
+
+        return false;
+    }
+    
     public static boolean deleteNode(Node root,int val){
 
-        if(MyTree.root.data == val){
+        if(BasicTreeMethods.root.data == val){
            BasicTreeMethods.root = null;
            return false;
         }
@@ -133,28 +157,9 @@ public class MyTree {
 
     }
 
-    //LERAN!!!
-    // public static Node serchNode(Node root,int val){
-        
-
-    //     if(root == null || (root.left == null && root.right == null)) return null;
-
-    //     if(root.left.data == val){
-    //         return root.left;
-    //     }
-    //     else if(root.right.data == val){
-    //         return root.right;
-    //     }
-
-    //     serchNode(root.left, val);
-    //     serchNode(root.right, val);
-
-    //     return null;
-    // }
-
     public static void main(String[] args) {
         
-        int nodes[] = {1,2,4,-1,-1,5,-1,-1,3,-1,6,-1,-1};
+        int nodes[] = {50,25,22,15,-1,-1,-1,40,30,-1,-1,-1,75,60,-1,-1,80,-1,90,-1,-1};
 
         BinaryTree tree = new BinaryTree();
         root = tree.buildTree(nodes);
@@ -179,10 +184,14 @@ public class MyTree {
         System.out.println("levelOrder is :");
         levelOrder(root);
 
-        deleteNode(root,1);
+        deleteNode(root,75);
         System.out.println("After deleting 1 : ");
         levelOrder(root);
 
+       boolean isFound = serchNode(root, 15);
+
+       if(isFound) System.out.println("The Node is found.");
+       else System.out.println("The Node is not found.");
 
     }
 }

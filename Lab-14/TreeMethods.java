@@ -1,4 +1,4 @@
-public class ExtraTreeMethods {
+public class TreeMethods {
     
     static class Node{
         int data;

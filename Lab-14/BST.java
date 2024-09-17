@@ -14,15 +14,20 @@ public class BST {
 
     public static void main(String[] args) {
 
-        int arr[] = {50,23,12,9,75,99};
+        int arr[] = {50,23,5,2,1};
 
         Node root = null;
 
         for(int i=0;i<arr.length;i++){
             root = insert(root, arr[i]);
+            if(checkCritical(root) && checkCase1(root, arr[i])){
+                root = rightRotation(root);
+            }
         }
-
-        // inOrder(root);
+        // System.out.println(root.data);
+        preOrder(root);
+        System.out.println(" ");
+        inOrder(root);
         // boolean isFound = search(root, 9);
 
         // System.out.println(" ");
@@ -30,14 +35,48 @@ public class BST {
         // else System.out.println("The value is not in the BST.");
 
 
-        System.out.println("Before deleting the elemt");
-        inOrder(root);
+        // System.out.println("Before deleting the elemt");
+        // inOrder(root);
 
+        // System.out.println(" ");
+
+        // delete(root,12);
+        // System.out.println("After deleting the elemt : ");
+        // inOrder(root);
+
+        // int maxh = findMaxHeight(root);
+        // System.out.println("Max height is : "+maxh);
+
+        
+        // int weightarr[] = new int[2];
+        
+        // weightarr = weight(root);
+        
+        // for(int i=0;i<weightarr.length;i++){
+        //     System.out.print(weightarr[i]);
+        // } 
+
+        // printAllWeight(root);
+        
+    }
+
+    public static void printAllWeight(Node root){
+
+        if(root == null) return;
+        
+        int weightarr[] = new int[2];
+
+        weightarr = weight(root);
+        
+        System.out.print("Weight array of "+root.data+" is : ");
+
+        for(int i=0;i<weightarr.length;i++){
+            System.out.print(weightarr[i]+" ");
+        } 
         System.out.println(" ");
 
-        delete(root,12);
-        System.out.println("After deleting the elemt : ");
-        inOrder(root);
+        printAllWeight(root.left);
+        printAllWeight(root.right);
     }
 
     public static Node insert(Node root ,int val){
@@ -126,6 +165,15 @@ public class BST {
 
     }
 
+    public static void newParentder(Node root){
+        if(root == null) return;
+
+        System.out.print(root.data+" ");
+        inOrder(root.left);
+        inOrder(root.right);
+
+    }
+
     public static void preOrder(Node root){
         if(root == null) return;
 
@@ -144,4 +192,75 @@ public class BST {
 
     }
 
+    public static int findMaxHeight(Node root){
+        if(root == null) return 0;
+
+        int leftHeight = findMaxHeight(root.left);
+        int rightHeight = findMaxHeight(root.right);
+
+        return Math.max(leftHeight,rightHeight) + 1;
+    }
+
+    public static int[] weight(Node root){
+
+        int ans[] = new int[3];
+
+        if(root == null) return ans;
+
+        ans[0] = findMaxHeight(root.left);
+        ans[1] = findMaxHeight(root.right);
+        ans[2] = Math.abs(ans[0] - ans[1]);
+       
+        weight(root.left);
+        weight(root.right);
+
+       return ans;
+    }
+
+    public static boolean checkCritical(Node root){
+
+        if(root == null) return false;
+
+        int weightarr[] = new int[3];
+
+        weightarr = weight(root);
+
+        if(weightarr[2] >= 2){
+            return true;
+        }
+        else{
+            checkCritical(root.left);
+            checkCritical(root.right);
+        }
+        return false;
+    }
+
+    public static boolean checkCase1(Node root,int key){
+
+        if(root == null || root.left == null) return false;
+
+        Node temp = root.left;
+        temp = temp.left;
+
+        while(temp != null){
+            if(temp.data == key){
+                return true;
+            }
+            temp = temp.left;
+        }
+        return false;
+    }
+
+    public static Node rightRotation(Node root){
+
+        Node lcRightSubTree = root.left.right;
+        root.left.right = null;
+
+        Node newParent = root.left;
+        newParent.right = root;
+
+        newParent.right.left = lcRightSubTree;
+
+        return newParent;
+    }
 }
