@@ -1,4 +1,4 @@
-public class GCDOfNode{
+    public class GCDOfNode{
     class Node {
         int data;
         Node next;
